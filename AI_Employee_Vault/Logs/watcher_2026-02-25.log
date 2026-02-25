@@ -1,0 +1,12 @@
+2026-02-25 12:37:35,294 - FilesystemWatcher - INFO - Drop folder: D:\FTE_AI_Employee\AI_Employee_Vault\Inbox
+2026-02-25 12:38:01,727 - FilesystemWatcher - INFO - Drop folder: D:\FTE_AI_Employee\AI_Employee_Vault\Inbox
+2026-02-25 12:38:01,734 - FilesystemWatcher - INFO - Processed file drop: test_document.txt -> FILE_test_documenttxt_20260225_123801.md
+2026-02-25 12:39:55,816 - FilesystemWatcher - INFO - Drop folder: D:\FTE_AI_Employee\AI_Employee_Vault\Inbox
+2026-02-25 12:39:55,816 - FilesystemWatcher - INFO - Starting FilesystemWatcher
+2026-02-25 12:39:55,816 - FilesystemWatcher - INFO - Vault path: D:\FTE_AI_Employee\AI_Employee_Vault
+2026-02-25 12:39:55,816 - FilesystemWatcher - INFO - Check interval: 30s
+2026-02-25 12:44:57,142 - FilesystemWatcher - INFO - FilesystemWatcher stopped by user
+2026-02-25 12:44:59,372 - FilesystemWatcher - INFO - Drop folder: D:\FTE_AI_Employee\AI_Employee_Vault\Inbox
+2026-02-25 12:44:59,373 - FilesystemWatcher - INFO - Starting FilesystemWatcher
+2026-02-25 12:44:59,373 - FilesystemWatcher - INFO - Vault path: D:\FTE_AI_Employee\AI_Employee_Vault
+2026-02-25 12:44:59,373 - FilesystemWatcher - INFO - Check interval: 30s
