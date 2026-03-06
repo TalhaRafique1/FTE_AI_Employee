@@ -1,33 +1,36 @@
 """
-Orchestrator Module
+Orchestrator Module - Silver Tier
 
 Main coordination script for the AI Employee system.
-Triggers Claude Code to process pending items and update the dashboard.
+Triggers Qwen Code to process pending items and update the dashboard.
+Supports multiple watchers: Gmail, LinkedIn, Filesystem.
 """
 
 import subprocess
 import sys
 import logging
+import json
 from pathlib import Path
 from datetime import datetime
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 
 class Orchestrator:
     """
-    Orchestrates the AI Employee workflow.
-    
+    Orchestrates the AI Employee workflow - Silver Tier.
+
     Responsibilities:
     1. Check for pending items in Needs_Action folder
     2. Trigger Qwen Code to process items
-    3. Update Dashboard.md with current status
-    4. Log all activities
+    3. Execute approved actions (LinkedIn posts, emails)
+    4. Update Dashboard.md with current status
+    5. Log all activities
     """
-    
+
     def __init__(self, vault_path: str, qwen_code_command: str = 'qwen'):
         """
         Initialize the orchestrator.
-        
+
         Args:
             vault_path: Path to the Obsidian vault root
             qwen_code_command: Command to run Qwen Code (default: 'qwen')
@@ -40,14 +43,19 @@ class Orchestrator:
         self.logs = self.vault_path / 'Logs'
         self.dashboard = self.vault_path / 'Dashboard.md'
         self.plans = self.vault_path / 'Plans'
-        
+        self.social = self.vault_path / 'Social'
+
         # Ensure directories exist
-        for folder in [self.needs_action, self.pending_approval, self.approved, 
-                       self.done, self.logs, self.plans]:
+        for folder in [self.needs_action, self.pending_approval, self.approved,
+                       self.done, self.logs, self.plans, self.social]:
             folder.mkdir(parents=True, exist_ok=True)
-        
+
         self.qwen_command = qwen_code_command
         self._setup_logging()
+
+        # MCP Server configuration for LinkedIn
+        self.mcp_url = "http://localhost:8808"
+        self.mcp_client_script = Path(__file__).parent / '.qwen' / 'skills' / 'browsing-with-playwright' / 'scripts' / 'mcp-client.py'
         
     def _setup_logging(self):
         """Configure logging."""
@@ -254,57 +262,310 @@ python filesystem_watcher.py
     def _build_prompt(self, na_count: int, pa_count: int, approved_count: int) -> str:
         """
         Build the prompt for Qwen Code.
-        
-        Args:
-            na_count: Number of items in Needs_Action
-            pa_count: Number of items in Pending_Approval
-            approved_count: Number of items in Approved
-            
-        Returns:
-            Formatted prompt string
         """
-        prompt = '''You are an AI Employee assistant. Process the pending items in this vault.
+        prompt = '''You are an AI Employee assistant. Process all pending items in this vault.
 
 ## Your Tasks:
 
-1. **Review Needs_Action folder**: Read all .md files in /Needs_Action
-2. **Create Plans**: For each item, create a Plan.md in /Plans with checkboxes for required steps
-3. **Process Simple Items**: If an item can be completed in one step, do it and move to /Done
-4. **Request Approval**: For sensitive actions (payments, external communications), create a file in /Pending_Approval
-5. **Update Dashboard**: After processing, summarize what was done
+1. **Read Company_Handbook.md first** - Understand the rules
+2. **Review Needs_Action folder** - Read all .md files
+3. **For each item, decide:**
+   - If it requires approval (payments, new contacts, sensitive actions) → Create Pending_Approval
+   - If it has 3+ steps → Create Plan.md
+   - If it's simple and safe → Process it
+
+## CRITICAL: Create Pending_Approval For:
+
+- **ALL payments** (any amount)
+- **Emails to NEW contacts** (first time)
+- **Social media posts**
+- **File deletions**
+- **Anything over $500**
+
+## Pending_Approval File Format:
+
+```markdown
+---
+type: approval_request
+action: [send_email|payment|social_post]
+created: [ISO timestamp]
+expires: [ISO timestamp +24h]
+priority: [low|normal|high|urgent]
+status: pending
+---
+
+## Action Required
+[Describe what needs approval]
+
+## Details
+- **Item:** [details]
+- **Reason:** [why needed]
+
+## [Action Specifics]
+[For emails: To, Subject, Draft content]
+[For payments: Amount, Recipient, Invoice #]
+
+## To Approve
+Move to /Approved folder
+
+## To Reject  
+Move to /Rejected folder
+```
 
 ## Rules:
-- Always be polite and professional
-- Flag anything over $500 for human approval
-- Log all actions taken
-- Move completed items to /Done
-- If unsure, ask for clarification in the action file
+- Be professional and polite
+- Log all actions
+- Move completed items to Done
+- Update Dashboard.md
 
 ## Current Status:
 - Needs Action: ''' + str(na_count) + ''' items
-- Pending Approval: ''' + str(pa_count) + ''' items
+- Pending Approval: ''' + str(pa_count) + ''' items  
 - Approved (ready to execute): ''' + str(approved_count) + ''' items
 
-Start by reading the files in /Needs_Action and /Company_Handbook.md for context.
-'''
+Start by reading Company_Handbook.md, then process Needs_Action files.'''
         return prompt
     
     def run_once(self, dry_run: bool = False):
         """Run a single processing cycle."""
         self.process_pending_items(dry_run=dry_run)
-    
+        # Also execute approved actions
+        self.execute_approved_actions(dry_run=dry_run)
+
+    def execute_approved_actions(self, dry_run: bool = False):
+        """Execute approved actions from /Approved/ folder."""
+        for approval_file in self.approved.glob('*.md'):
+            try:
+                content = approval_file.read_text(encoding='utf-8')
+                action_type = self._extract_action_type(content)
+                
+                self.logger.info(f'Processing approved action: {approval_file.name} (type: {action_type})')
+                
+                if action_type == 'linkedin_post':
+                    self._execute_linkedin_post(approval_file, content, dry_run)
+                elif action_type == 'send_email':
+                    self._execute_email_send(approval_file, content, dry_run)
+                else:
+                    self.logger.info(f'Unknown action type: {action_type}, letting Qwen handle it')
+                    continue
+                
+                # Move to Done after successful execution
+                if not dry_run:
+                    dest = self.done / approval_file.name
+                    approval_file.rename(dest)
+                    self.logger.info(f'Moved {approval_file.name} to Done')
+                    
+            except Exception as e:
+                self.logger.error(f'Error executing approval {approval_file.name}: {e}')
+                # Move back to Pending_Approval on error
+                if not dry_run:
+                    dest = self.pending_approval / approval_file.name
+                    approval_file.rename(dest)
+                    self.logger.warning(f'Moved {approval_file.name} back to Pending_Approval due to error')
+
+    def _extract_action_type(self, content: str) -> Optional[str]:
+        """Extract action type from approval file content."""
+        import re
+        # Look for action: xxx in frontmatter
+        match = re.search(r'action:\s*(\w+)', content)
+        if match:
+            return match.group(1)
+        return None
+
+    def _execute_linkedin_post(self, approval_file: Path, content: str, dry_run: bool = False):
+        """Execute LinkedIn post via Playwright MCP."""
+        import re
+        
+        # Extract post content - look for ## Post Content section
+        content_match = re.search(r'## Post Content\s*\n+(.+?)(?=##|\n---|\Z)', content, re.DOTALL)
+        
+        if not content_match:
+            # Try alternative: look for content after any heading
+            content_match = re.search(r'(🏆[^\n]+.*?)(?=##|\n---|\Z)', content, re.DOTALL)
+        
+        post_content = content_match.group(1).strip() if content_match else None
+        
+        if not post_content:
+            self.logger.error('Could not extract post content')
+            self.logger.debug(f'File content: {content[:500]}')
+            return
+        
+        # Extract media path if any
+        media_match = re.search(r'## Media\s*\n+-\s*Image:\s*(.+?)(?:\n|$)', content, re.IGNORECASE)
+        media_path = media_match.group(1).strip() if media_match and media_match.group(1).strip() != '(Optional)' else None
+        
+        self.logger.info(f'Post content extracted: {len(post_content)} chars')
+        
+        if dry_run:
+            self.logger.info(f'[DRY RUN] Would post to LinkedIn: {post_content[:100]}...')
+            return
+        
+        self.logger.info(f'Posting to LinkedIn: {post_content[:100]}...')
+        
+        # Use Playwright MCP to post
+        try:
+            # Navigate to LinkedIn
+            self.logger.info('Navigating to LinkedIn...')
+            result = self._mcp_call('browser_navigate', {'url': 'https://www.linkedin.com/feed/'})
+            if not result:
+                self.logger.error('Failed to navigate to LinkedIn')
+                return
+            import time
+            time.sleep(5)  # Wait for page to load
+            
+            # Get snapshot to find element refs
+            self.logger.info('Getting page snapshot...')
+            snapshot = self._mcp_call('browser_snapshot', {})
+            
+            if not snapshot:
+                self.logger.error('Failed to get page snapshot')
+                return
+            
+            # Click "Start a post" - look for the button in snapshot
+            self.logger.info('Opening post composer...')
+            # The ref might vary, we need to find it from snapshot
+            # For now, try common refs
+            start_post_refs = ['e192', 'e42', 'e14']  # Common refs for "Start a post"
+            
+            for ref in start_post_refs:
+                result = self._mcp_call('browser_click', {'element': 'Start a post', 'ref': ref})
+                if result:
+                    self.logger.info(f'Clicked "Start a post" with ref {ref}')
+                    break
+                time.sleep(1)
+            
+            # Type the post content
+            self.logger.info('Filling post content...')
+            # Find the text area ref
+            text_area_refs = ['e45', 'e10', 'e15']  # Common refs for text area
+            
+            for ref in text_area_refs:
+                result = self._mcp_call('browser_type', {
+                    'element': 'Post text area',
+                    'ref': ref,
+                    'text': post_content[:2000],  # LinkedIn limit
+                    'submit': False
+                })
+                if result:
+                    self.logger.info(f'Typed content with ref {ref}')
+                    break
+                time.sleep(1)
+            
+            # Click Post button
+            self.logger.info('Publishing post...')
+            post_refs = ['e50', 'e20', 'e25']  # Common refs for Post button
+            
+            for ref in post_refs:
+                result = self._mcp_call('browser_click', {'element': 'Post button', 'ref': ref})
+                if result:
+                    self.logger.info(f'Clicked Post button with ref {ref}')
+                    break
+                time.sleep(1)
+            
+            # Take screenshot for confirmation
+            self.logger.info('Capturing confirmation...')
+            screenshot_result = self._mcp_call('browser_take_screenshot', {
+                'type': 'png',
+                'filename': f'linkedin_post_{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
+            })
+            
+            self.logger.info('LinkedIn post published successfully!')
+            
+            # Log the post
+            self._log_linkedin_post(post_content, media_path)
+            
+        except Exception as e:
+            self.logger.error(f'Failed to post to LinkedIn: {e}')
+            raise
+
+    def _execute_email_send(self, approval_file: Path, content: str, dry_run: bool = False):
+        """Execute email send using Gmail API."""
+        import re
+        
+        # Extract email details
+        to_match = re.search(r'to:\s*"([^"]+)"', content)
+        subject_match = re.search(r'subject:\s*"([^"]+)"', content)
+        
+        # Extract email body
+        body_match = re.search(r'## Email Content\s*\n+(.+?)(?=##|\n---|\Z)', content, re.DOTALL)
+        
+        if not all([to_match, subject_match]):
+            self.logger.error('Could not extract email details')
+            return
+        
+        to_email = to_match.group(1)
+        subject = subject_match.group(1)
+        body = body_match.group(1).strip() if body_match else "See attached file for details"
+        
+        if dry_run:
+            self.logger.info(f'[DRY RUN] Would send email to {to_email}')
+            return
+        
+        self.logger.info(f'Sending email to {to_email} with subject: {subject}')
+        
+        # Call email sender script
+        try:
+            result = subprocess.run(
+                ['python', 'send_gmail_email.py', '--to', to_email, '--subject', subject, '--body', body],
+                capture_output=True, text=True, timeout=30,
+                cwd=str(Path(__file__).parent)
+            )
+            
+            if result.returncode == 0:
+                self.logger.info('Email sent successfully!')
+            else:
+                self.logger.error(f'Email send failed: {result.stderr}')
+        except Exception as e:
+            self.logger.error(f'Error sending email: {e}')
+
+    def _mcp_call(self, tool: str, params: dict) -> Optional[dict]:
+        """Make a call to the MCP server."""
+        if not self.mcp_client_script.exists():
+            self.logger.warning(f'MCP client script not found: {self.mcp_client_script}')
+            return None
+        
+        try:
+            result = subprocess.run(
+                ['python', str(self.mcp_client_script), 'call',
+                 '-u', self.mcp_url, '-t', tool, '-p', json.dumps(params)],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode == 0:
+                return json.loads(result.stdout)
+            else:
+                self.logger.error(f'MCP call failed: {result.stderr}')
+                return None
+        except Exception as e:
+            self.logger.error(f'MCP call error: {e}')
+            return None
+
+    def _log_linkedin_post(self, content: str, media_path: Optional[str]):
+        """Log LinkedIn post to log file."""
+        log_file = self.vault_path / 'Logs' / 'linkedin_posts.md'
+        
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
+        
+        log_entry = f'\n| {timestamp} | {content[:50]}... | ✅ Posted | - |\n'
+        
+        if not log_file.exists():
+            log_file.write_text('# LinkedIn Posts Log\n\n| Date | Content | Status | Engagement |\n|------|---------|--------|------------|\n')
+        
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(log_entry)
+
+
     def run_continuous(self, interval: int = 60, dry_run: bool = False):
         """
         Run continuous processing cycles.
-        
+
         Args:
             interval: Seconds between processing runs
             dry_run: If True, log without executing
         """
         import time
-        
+
         self.logger.info(f'Starting continuous mode (interval: {interval}s)')
-        
+
         try:
             while True:
                 self.run_once(dry_run=dry_run)

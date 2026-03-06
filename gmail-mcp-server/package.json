@@ -1,0 +1,28 @@
+{
+  "name": "gmail-mcp-server",
+  "version": "1.0.0",
+  "description": "Gmail MCP Server for Qwen Code - Send and read emails",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "gmail-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "googleapis": "^140.0.0",
+    "mime-types": "^3.0.2"
+  },
+  "keywords": [
+    "gmail",
+    "mcp",
+    "email",
+    "qwen-code"
+  ],
+  "author": "AI Employee",
+  "license": "MIT"
+}

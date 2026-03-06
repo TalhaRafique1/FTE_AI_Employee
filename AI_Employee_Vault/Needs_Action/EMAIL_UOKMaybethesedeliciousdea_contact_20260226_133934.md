@@ -1,0 +1,725 @@
+---
+type: email
+created: 2026-02-26T13:39:34.554242
+status: pending
+from_email: "foodpanda <contact@info.foodpanda.pk>"
+subject: "U OK? Maybe these delicious deals will make you feel better! 💗"
+received: 2026-02-26T13:39:34.554231
+priority: "high"
+message_id: "19c6b18f52f62cbf"
+status: pending
+is_urgent: false
+is_invoice_related: false
+---
+
+# Email for Processing
+
+## Email Details
+- **From:** foodpanda <contact@info.foodpanda.pk>
+- **To:** aestheticwrites498@gmail.com
+- **Subject:** U OK? Maybe these delicious deals will make you feel better! 💗
+- **Received:** Tue, 17 Feb 2026 10:10:02 +0000 (UTC)
+- **Priority:** High
+- **Urgent:** No
+- **Invoice Related:** No
+
+## Email Preview
+Hot promos inside. bite-sized prices your new go-tos Optp - Box Park Bahria Town Phase 7 Savour Foods - Blue Area Broadway Pizza - Clifton Dunkin Donuts Hardee&#39;s - Kasuri Subway order now save now
+
+## Full Email Body
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Hot promos inside.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+foodpanda      * { font-family: 'Avenir Next LT Pro',
+Helvetica, Arial, 'Roboto', sans-serif; }               96
+         (
+
+https://bhpz.adj.st/?c=PK&s=l&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dl&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%26utm_source%3Demail%26utm_medium%3Dfood%26utm_campaign%3Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3Demail_logo
+ )
+
+                  (
+
+https://bhpz.adj.st/?c=PK&s=l&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dl&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%26utm_source%3Demail%26utm_medium%3Dfood%26utm_campaign%3Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3Demail_hero
+ )
+
+
+ bite-sized prices
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=cmp&id=
+https://bhpz.adj.st/?c=PK&s=l&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=bottom_cta&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dl&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%26utm_source%3Demail%26utm_medium%3Dfood%26utm_campaign%3Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3Dbottom_cta
+&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dcmp%26id%3D%0Ahttps%3A%2F%2Fbhpz.adj.st%2F%3Fc%3DPK%26s%3Dl%26adjust_t%3D5whn9n_sw8vui%26adjust_campaign%3DPK_Email%26adjust_adgroup%3Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26adjust_creative%3Dbottom_cta%26adjust_deeplink%3Dfoodpanda%253A%252F%252F%253Fc%253DPK%2526s%253Dl%26adjust_redirect%3Dhttps%253A%252F%252Fwww.foodpanda.PK%2526utm_source%253Demail%2526utm_medium%253Dfood%2526utm_campaign%253Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%2526utm_keyword%253Dbottom_cta%0A&adjust_redirect=https://www.foodpanda.PK/campaigns?url_key=new pehla order&utm_source=email&utm_medium=food&utm_campaign=dynamicfoodvertical&utm_keyword=banner_links
+ )
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=cmp&id=5537adc5-92f5-11f0-bb33-7a771401eb16&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dcmp%26id%3D5537adc5-92f5-11f0-bb33-7a771401eb16&adjust_redirect=https://www.foodpanda.PK/campaigns?url_key=Tier 1 Campaign food&utm_source=email&utm_medium=food&utm_campaign=dynamicfoodvertical&utm_keyword=banner_links
+ )
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=cmp&id=c4982428-08b1-11f1-9cc6-aa80e69af248&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dcmp%26id%3Dc4982428-08b1-11f1-9cc6-aa80e69af248&adjust_redirect=https://www.foodpanda.PK/campaigns?url_key=KFC Feb Deal&utm_source=email&utm_medium=food&utm_campaign=dynamicfoodvertical&utm_keyword=banner_links
+ )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ your new go-tos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=ca5vf&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dca5vf&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fca5vf%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Optp
+- Box Park Bahria Town Phase
+7
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=cw2tn&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dcw2tn&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fcw2tn%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Savour
+Foods - Blue
+Area
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=cw4xt&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dcw4xt&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fcw4xt%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Broadway
+Pizza -
+Clifton
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=cy5mj&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dcy5mj&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fcy5mj%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Dunkin
+Donuts
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=ct7xe&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dct7xe&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fct7xe%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Hardee's
+-
+Kasuri
+
+
+
+
+       (
+
+https://bhpz.adj.st/?c=PK&s=s&ch=ca0dn&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=Swimlane_links&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%26ch%3Dca0dn&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%2Fchain%2Fca0dn%26utm_source%3Demail%26utm_medium%3Dfood%26crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3DAAAswimlane_links
+ )
+Subway
+
+
+
+
+
+ order now
+ save now
+
+
+ (
+
+https://bhpz.adj.st/?c=PK&s=l&adjust_t=5whn9n_sw8vui&adjust_campaign=PK_Email&adjust_adgroup=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8&adjust_creative=PK_511683194&adjust_deeplink=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Dl&adjust_redirect=https%3A%2F%2Fwww.foodpanda.PK%26utm_source%3Demail%26utm_medium%3Dfood%26utm_campaign%3Dcrm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8%26utm_keyword%3Dbottom_cta
+ )
+
+
+
+
+
+
+
+           ios (
+https://app.adjust.io/f6igys?campaign=PK_email_iOS&deep_link=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%0A )     play (
+https://app.adjust.io/dfv9zs?campaign=PK_email_Android&deep_link=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%0A )        play (
+https://app.adjust.io/dfv9zs?campaign=PK_email_Android&deep_link=foodpanda%3A%2F%2F%3Fc%3DPK%26s%3Ds%0A )
+
+social-icons ( https://www.facebook.com/foodpandahellofood )
+   social-icons (
+https://www.instagram.com/foodpanda_pakistan/ )
+Privacy | (
+https://www.foodpanda.pk/contents/privacy.htm?utm_content=value&utm_source=newsletter&utm_medium=crm&utm_campaign=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8?utm_content=value&utm_source=newsletter&utm_medium=crm
+) General terms and conditions | (
+https://www.foodpanda.pk/contents/terms-and-conditions.htm?utm_content=value&utm_source=newsletter&utm_medium=crm&utm_campaign=crm_bra_eat_aut_EAT_AUT_240322_PK_FP_AH_AutoDynamicFood_Promo_EMAIL_5f1d761b-1b5b-4ac6-9597-21efd01f98e8?utm_content=value&utm_source=newsletter&utm_medium=crm
+) Unsubscribe (
+https://01.emailinboundprocessing.com/enc_user/unsubscribe?d=%241%24DG3HS6j0yCAK%2Fva3RZG6Mw%3D%3D%24ll0OYYKshmouJlr%2BxALQDqCaJPtIuly8Q47vs6jGw4BjXsW1OTWI5BptWiRx%0AEUAKlDSAVXdK87dlcp9bJDHRsaP5Lw779fnNX9LYK29vIuJunrXTT0SKy0kr%0AuZLq5rN72NoMxC5PZ%2Bk9BOo0ulXYlX%2FUP1EaYQIsioKKJZefcFIEp%2BXsxHO%2F%0AWPt33qPnGsh7VYMf7f8rRNOPosYeDpElQfrl1kOgGQHBuTgqugCL%2F9l8avwz%0AIsRGG07YpvEl7Blo43Vx2n4fVOIutstr5MoM1H7kEbkF8rwYZQcAUQzQeaG7%0AdvuLXY6a3cME3Ki9cLwGnPFtSTprDPSDh5Tl5RmLOQnKDyFXfuMJsr4O96XT%0Ai46dWbcCIoYWUID1PfgKuMdB&1=1 )
+2nd Floor, Bahria Town Tower, Tariq Road, Karachi, Pakistan ©
+foodpanda Pakistan
+
+## Suggested Actions
+- [ ] Read full email content
+- [ ] Determine appropriate response
+- [ ] Archive email after processing
+
+## Response Draft
+_Add your response draft here_
+
+## Notes
+_Add any notes or context_
