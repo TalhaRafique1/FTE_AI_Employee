@@ -1,0 +1,13 @@
+# Odoo MCP Server Dependencies
+
+# MCP SDK
+mcp>=1.0.0
+
+# Odoo XML-RPC client (included in Python stdlib, but listed for clarity)
+# xmlrpc.client
+
+# Async support
+asyncio>=3.4.3
+
+# Logging
+# (included in Python stdlib)

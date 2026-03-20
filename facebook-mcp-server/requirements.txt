@@ -1,0 +1,13 @@
+# Facebook MCP Server Dependencies
+
+# MCP SDK
+mcp>=1.0.0
+
+# HTTP client for API calls
+httpx>=0.25.0
+
+# Async support
+asyncio>=3.4.3
+
+# Environment variables
+python-dotenv>=1.0.0

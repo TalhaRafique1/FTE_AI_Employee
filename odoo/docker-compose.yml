@@ -1,0 +1,74 @@
+# Note: 'version' key is obsolete in Docker Compose v2+, removed to avoid warnings
+
+services:
+  # PostgreSQL Database for Odoo
+  db:
+    image: postgres:15-alpine
+    container_name: odoo_postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo_secure_password_123
+    volumes:
+      - odoo_postgresql_data:/var/lib/postgresql/data
+    networks:
+      - odoo_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Odoo Community Edition
+  odoo:
+    image: odoo:17.0
+    container_name: odoo_community
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo_secure_password_123
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo_web_data:/var/lib/odoo
+      - ./odoo_config:/etc/odoo
+      - ./odoo_addons:/mnt/extra-addons
+    networks:
+      - odoo_network
+    restart: unless-stopped
+    command: --workers=2 --max-cron-threads=1
+
+  # Odoo MCP Server (will be built separately)
+  odoo-mcp:
+    build:
+      context: ./odoo-mcp-server
+      dockerfile: Dockerfile
+    container_name: odoo_mcp_server
+    depends_on:
+      - odoo
+    environment:
+      - ODOO_URL=http://odoo:8069
+      - ODOO_DB=postgres
+      - ODOO_USER=admin
+      - ODOO_PASSWORD=admin
+    ports:
+      - "8810:8810"
+    networks:
+      - odoo_network
+    restart: unless-stopped
+    volumes:
+      - ./odoo-mcp-server:/app
+
+volumes:
+  odoo_postgresql_data:
+    driver: local
+  odoo_web_data:
+    driver: local
+
+networks:
+  odoo_network:
+    driver: bridge

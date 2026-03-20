@@ -1,9 +1,10 @@
 """
-Orchestrator Module - Silver Tier
+Orchestrator Module - Gold Tier
 
 Main coordination script for the AI Employee system.
 Triggers Qwen Code to process pending items and update the dashboard.
-Supports multiple watchers: Gmail, LinkedIn, Filesystem.
+Supports multiple watchers: Gmail, LinkedIn, Facebook, Filesystem.
+Includes Gold Tier features: Odoo integration, Ralph Wiggum Loop, CEO Briefings.
 """
 
 import subprocess
@@ -17,23 +18,28 @@ from typing import List, Tuple, Optional
 
 class Orchestrator:
     """
-    Orchestrates the AI Employee workflow - Silver Tier.
+    Orchestrates the AI Employee workflow - Gold Tier.
 
     Responsibilities:
     1. Check for pending items in Needs_Action folder
     2. Trigger Qwen Code to process items
-    3. Execute approved actions (LinkedIn posts, emails)
+    3. Execute approved actions (LinkedIn/Facebook posts, emails, Odoo operations)
     4. Update Dashboard.md with current status
     5. Log all activities
+    6. Support Ralph Wiggum Loop for autonomous completion
+    7. Generate weekly CEO briefings
     """
 
-    def __init__(self, vault_path: str, qwen_code_command: str = 'qwen'):
+    def __init__(self, vault_path: str, qwen_code_command: str = 'qwen',
+                 odoo_enabled: bool = False, odoo_mcp_url: str = "http://localhost:8810"):
         """
         Initialize the orchestrator.
 
         Args:
             vault_path: Path to the Obsidian vault root
             qwen_code_command: Command to run Qwen Code (default: 'qwen')
+            odoo_enabled: Whether Odoo integration is enabled
+            odoo_mcp_url: URL of Odoo MCP server
         """
         self.vault_path = Path(vault_path)
         self.needs_action = self.vault_path / 'Needs_Action'
@@ -44,18 +50,27 @@ class Orchestrator:
         self.dashboard = self.vault_path / 'Dashboard.md'
         self.plans = self.vault_path / 'Plans'
         self.social = self.vault_path / 'Social'
+        self.briefings = self.vault_path / 'Briefings'
 
         # Ensure directories exist
         for folder in [self.needs_action, self.pending_approval, self.approved,
-                       self.done, self.logs, self.plans, self.social]:
+                       self.done, self.logs, self.plans, self.social, self.briefings]:
             folder.mkdir(parents=True, exist_ok=True)
 
         self.qwen_command = qwen_code_command
         self._setup_logging()
 
-        # MCP Server configuration for LinkedIn
-        self.mcp_url = "http://localhost:8808"
+        # MCP Server configurations
+        self.playwright_mcp_url = "http://localhost:8808"
+        self.odoo_mcp_url = odoo_mcp_url
+        self.odoo_enabled = odoo_enabled
         self.mcp_client_script = Path(__file__).parent / '.qwen' / 'skills' / 'browsing-with-playwright' / 'scripts' / 'mcp-client.py'
+
+        # Ralph Wiggum Loop configuration
+        self.ralph_loop_script = Path(__file__).parent / 'ralph_wiggum_loop.py'
+
+        # CEO Briefing configuration
+        self.briefing_generator_script = Path(__file__).parent / 'ceo_briefing_generator.py'
         
     def _setup_logging(self):
         """Configure logging."""
@@ -542,17 +557,273 @@ Start by reading Company_Handbook.md, then process Needs_Action files.'''
     def _log_linkedin_post(self, content: str, media_path: Optional[str]):
         """Log LinkedIn post to log file."""
         log_file = self.vault_path / 'Logs' / 'linkedin_posts.md'
-        
+
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
-        
+
         log_entry = f'\n| {timestamp} | {content[:50]}... | ✅ Posted | - |\n'
-        
+
         if not log_file.exists():
             log_file.write_text('# LinkedIn Posts Log\n\n| Date | Content | Status | Engagement |\n|------|---------|--------|------------|\n')
-        
+
         with open(log_file, 'a', encoding='utf-8') as f:
             f.write(log_entry)
 
+    # ==================== GOLD TIER METHODS ====================
+
+    def execute_facebook_post(self, approval_file: Path, content: str, dry_run: bool = False):
+        """Execute Facebook post via Playwright MCP."""
+        import re
+
+        # Extract post content
+        content_match = re.search(r'## Post Content\s*\n+(.+?)(?=##|\n---|\Z)', content, re.DOTALL)
+        post_content = content_match.group(1).strip() if content_match else None
+
+        if not post_content:
+            self.logger.error('Could not extract post content')
+            return
+
+        if dry_run:
+            self.logger.info(f'[DRY RUN] Would post to Facebook: {post_content[:100]}...')
+            return
+
+        self.logger.info(f'Posting to Facebook: {post_content[:100]}...')
+
+        # Import and use Facebook watcher
+        try:
+            sys.path.insert(0, str(Path(__file__).parent / 'watchers'))
+            from facebook_watcher import FacebookWatcher
+
+            watcher = FacebookWatcher(str(self.vault_path))
+            success = watcher.post_to_facebook(post_content)
+
+            if success:
+                self._log_facebook_post(post_content)
+                self.logger.info('Facebook post published successfully!')
+            else:
+                self.logger.error('Failed to post to Facebook')
+
+        except Exception as e:
+            self.logger.error(f'Error posting to Facebook: {e}')
+
+    def _log_facebook_post(self, content: str):
+        """Log Facebook post to log file."""
+        log_file = self.vault_path / 'Logs' / 'facebook_posts.md'
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
+        log_entry = f'\n| {timestamp} | {content[:50]}... | ✅ Posted | - |\n'
+
+        if not log_file.exists():
+            log_file.write_text('# Facebook Posts Log\n\n| Date | Content | Status | Engagement |\n|------|---------|--------|------------|\n')
+
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(log_entry)
+
+    def execute_odoo_action(self, action_type: str, params: dict, dry_run: bool = False):
+        """Execute Odoo action via Odoo MCP server."""
+        if not self.odoo_enabled:
+            self.logger.info('Odoo integration is disabled')
+            return
+
+        self.logger.info(f'Executing Odoo action: {action_type}')
+
+        if dry_run:
+            self.logger.info(f'[DRY RUN] Would execute Odoo action: {action_type}')
+            return
+
+        try:
+            # Call Odoo MCP server
+            result = self._odoo_mcp_call(action_type, params)
+            if result:
+                self.logger.info(f'Odoo action completed: {result}')
+                return result
+            else:
+                self.logger.error('Odoo action failed')
+                return None
+        except Exception as e:
+            self.logger.error(f'Error executing Odoo action: {e}')
+            return None
+
+    def _odoo_mcp_call(self, tool: str, params: dict) -> Optional[dict]:
+        """Make a call to the Odoo MCP server."""
+        try:
+            result = subprocess.run(
+                ['python', str(self.mcp_client_script), 'call',
+                 '-u', self.odoo_mcp_url, '-t', tool, '-p', json.dumps(params)],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode == 0:
+                output = result.stdout.strip()
+                if output:
+                    return json.loads(output)
+                return {}
+            else:
+                self.logger.error(f'Odoo MCP call failed: {result.stderr}')
+                return None
+        except Exception as e:
+            self.logger.error(f'Odoo MCP call error: {e}')
+            return None
+
+    def run_ralph_wiggum_loop(self, task: str, max_iterations: int = 10):
+        """
+        Run the Ralph Wiggum autonomous completion loop.
+
+        Args:
+            task: Task description for Qwen Code
+            max_iterations: Maximum loop iterations
+        """
+        if not self.ralph_loop_script.exists():
+            self.logger.warning(f'Ralph Wiggum script not found: {self.ralph_loop_script}')
+            return
+
+        self.logger.info(f'Starting Ralph Wiggum loop for task: {task}')
+
+        try:
+            result = subprocess.run(
+                ['python', str(self.ralph_loop_script), task,
+                 '--vault', str(self.vault_path),
+                 '--max-iterations', str(max_iterations)],
+                cwd=str(self.vault_path),
+                capture_output=True, text=True, timeout=3600
+            )
+
+            if result.returncode == 0:
+                self.logger.info('Ralph Wiggum loop completed successfully!')
+            else:
+                self.logger.warning(f'Ralph Wiggum loop completed with warnings')
+                if result.stderr:
+                    self.logger.debug(f'Stderr: {result.stderr[:500]}')
+
+        except subprocess.TimeoutExpired:
+            self.logger.error('Ralph Wiggum loop timed out')
+        except Exception as e:
+            self.logger.error(f'Error in Ralph Wiggum loop: {e}')
+
+    def generate_ceo_briefing(self, odoo_enabled: bool = False):
+        """Generate weekly CEO briefing."""
+        if not self.briefing_generator_script.exists():
+            self.logger.warning(f'Briefing generator not found: {self.briefing_generator_script}')
+            return
+
+        self.logger.info('Generating CEO briefing...')
+
+        try:
+            result = subprocess.run(
+                ['python', str(self.briefing_generator_script),
+                 '--vault', str(self.vault_path)] +
+                (['--odoo'] if odoo_enabled and self.odoo_enabled else []),
+                cwd=str(self.vault_path),
+                capture_output=True, text=True, timeout=300
+            )
+
+            if result.returncode == 0:
+                self.logger.info('CEO briefing generated successfully!')
+                self.logger.info(result.stdout)
+            else:
+                self.logger.error(f'CEO briefing generation failed: {result.stderr}')
+
+        except Exception as e:
+            self.logger.error(f'Error generating CEO briefing: {e}')
+
+    def schedule_weekly_briefing(self, day: str = 'MON', hour: int = 7):
+        """Schedule weekly CEO briefing via Windows Task Scheduler."""
+        self.logger.info(f'Scheduling weekly briefing for {day}s at {hour}:00')
+
+        try:
+            # Create scheduled task
+            task_name = "AI_Employee_CEO_Briefing"
+            command = f'python "{self.briefing_generator_script}" --vault "{self.vault_path}"'
+
+            result = subprocess.run(
+                f'schtasks /create /tn "{task_name}" /tr "{command}" /sc weekly /d {day} /st {hour:02d}:00 /rl highest /f',
+                shell=True, capture_output=True, text=True
+            )
+
+            if result.returncode == 0:
+                self.logger.info(f'Scheduled task "{task_name}" created successfully')
+            else:
+                self.logger.warning(f'Failed to create scheduled task: {result.stderr}')
+
+        except Exception as e:
+            self.logger.error(f'Error scheduling briefing: {e}')
+
+    def _build_prompt(self, na_count: int, pa_count: int, approved_count: int) -> str:
+        """
+        Build the prompt for Qwen Code - Gold Tier version.
+        """
+        prompt = '''You are an AI Employee assistant. Process all pending items in this vault.
+
+## Your Tasks:
+
+1. **Read Company_Handbook.md first** - Understand the rules
+2. **Review Needs_Action folder** - Read all .md files
+3. **For each item, decide:**
+   - If it requires approval (payments, new contacts, sensitive actions) → Create Pending_Approval
+   - If it has 3+ steps → Create Plan.md
+   - If it's simple and safe → Process it
+
+## CRITICAL: Create Pending_Approval For:
+
+- **ALL payments** (any amount)
+- **Emails to NEW contacts** (first time)
+- **Social media posts** (LinkedIn, Facebook)
+- **File deletions**
+- **Anything over $500**
+- **Odoo accounting actions** (invoices, payments)
+
+## Gold Tier Capabilities:
+
+You can now:
+- Post to **LinkedIn** and **Facebook**
+- Manage accounting via **Odoo** (invoices, payments, partners)
+- Use **Ralph Wiggum Loop** for autonomous multi-step tasks
+- Generate **CEO Briefings** every Monday
+
+## Pending_Approval File Format:
+'''
+        # Add rest of original prompt
+        prompt += f'''
+```markdown
+---
+type: approval_request
+action: [send_email|payment|social_post|odoo_action]
+created: [ISO timestamp]
+expires: [ISO timestamp +24h]
+priority: [low|normal|high|urgent]
+status: pending
+---
+
+## Action Required
+[Describe what needs approval]
+
+## Details
+- **Item:** [details]
+- **Reason:** [why needed]
+
+## [Action Specifics]
+[For emails: To, Subject, Draft content]
+[For payments: Amount, Recipient, Invoice #]
+[For Odoo: Action type, Parameters]
+
+## To Approve
+Move this file to /Approved folder.
+
+## To Reject
+Move this file to /Rejected folder.
+```
+
+## Rules:
+- Be professional and polite
+- Log all actions
+- Move completed items to Done
+- Update Dashboard.md
+- Use Ralph Wiggum Loop for complex multi-step tasks
+
+## Current Status:
+- Needs Action: ''' + str(na_count) + ''' items
+- Pending Approval: ''' + str(pa_count) + ''' items
+- Approved (ready to execute): ''' + str(approved_count) + ''' items
+
+Start by reading Company_Handbook.md, then process Needs_Action files.'''
+        return prompt
 
     def run_continuous(self, interval: int = 60, dry_run: bool = False):
         """
@@ -577,8 +848,8 @@ Start by reading Company_Handbook.md, then process Needs_Action files.'''
 def main():
     """Main entry point."""
     import argparse
-    
-    parser = argparse.ArgumentParser(description='AI Employee Orchestrator')
+
+    parser = argparse.ArgumentParser(description='AI Employee Orchestrator - Gold Tier')
     parser.add_argument(
         '--vault', '-v',
         default=r'D:\FTE_AI_Employee\AI_Employee_Vault',
@@ -605,11 +876,55 @@ def main():
         default='qwen',
         help='Qwen Code command (default: qwen)'
     )
-    
+    parser.add_argument(
+        '--odoo',
+        action='store_true',
+        help='Enable Odoo integration'
+    )
+    parser.add_argument(
+        '--odoo-url',
+        default='http://localhost:8810',
+        help='Odoo MCP server URL (default: http://localhost:8810)'
+    )
+    parser.add_argument(
+        '--generate-briefing',
+        action='store_true',
+        help='Generate CEO briefing immediately'
+    )
+    parser.add_argument(
+        '--schedule-briefing',
+        action='store_true',
+        help='Schedule weekly CEO briefing'
+    )
+    parser.add_argument(
+        '--ralph-loop',
+        type=str,
+        help='Run Ralph Wiggum loop with given task'
+    )
+
     args = parser.parse_args()
-    
-    orchestrator = Orchestrator(args.vault, args.qwen_cmd)
-    
+
+    orchestrator = Orchestrator(
+        args.vault,
+        args.qwen_cmd,
+        odoo_enabled=args.odoo,
+        odoo_mcp_url=args.odoo_url
+    )
+
+    # Handle special commands
+    if args.generate_briefing:
+        orchestrator.generate_ceo_briefing(odoo_enabled=args.odoo)
+        return
+
+    if args.schedule_briefing:
+        orchestrator.schedule_weekly_briefing()
+        return
+
+    if args.ralph_loop:
+        orchestrator.run_ralph_wiggum_loop(args.ralph_loop)
+        return
+
+    # Normal operation
     if args.continuous:
         orchestrator.run_continuous(interval=args.interval, dry_run=args.dry_run)
     else:
